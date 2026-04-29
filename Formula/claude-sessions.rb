@@ -1,10 +1,10 @@
 class ClaudeSessions < Formula
   desc "Auto-resume Claude Code sessions after Mac restart"
   homepage "https://github.com/amer313/claude-sessions"
-  url "https://github.com/amer313/claude-sessions/archive/refs/tags/v0.3.3.tar.gz"
-  sha256 "d25f8e0054ac4a25cd6d7b11990f15ea04532d74ea2a0ca266293038b88ddc1e"
+  url "https://github.com/amer313/claude-sessions/archive/refs/tags/v0.4.0.tar.gz"
+  sha256 "bd4cbbfb8d209b4fd8466dbd1092abab113c934e6a33bd9af0dc376d18c48e38"
   license "MIT"
-  version "0.3.3"
+  version "0.4.0"
 
   depends_on :macos
 
