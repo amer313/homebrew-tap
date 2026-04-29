@@ -1,22 +1,25 @@
 class ClaudeSessions < Formula
   desc "Auto-resume Claude Code sessions after Mac restart"
   homepage "https://github.com/amer313/claude-sessions"
-  url "https://github.com/amer313/claude-sessions/archive/refs/tags/v0.2.1.tar.gz"
-  sha256 "032c516534d626f6412998813b8f465aa2daf6609952cecacc2595d5ecbcf5e8"
+  url "https://github.com/amer313/claude-sessions/archive/refs/tags/v0.3.0.tar.gz"
+  sha256 "9d7b312245940e347a642ced3f389096ed7e677c364268d638ccc4c45f34fe98"
   license "MIT"
-  version "0.2.1"
+  version "0.3.0"
 
   depends_on :macos
 
   def install
     bin.install "claude-sessions"
-    # Install the menu bar script to libexec; the main script finds it via
-    # a download fallback if not alongside, but shipping it makes install
-    # offline-capable and avoids a second HTTP round-trip.
-    libexec.install "claude-sessions-menubar.py"
-    # Place a symlink next to the bin script so `claude-sessions menubar install`
-    # finds it via its `$(dirname "$0")` lookup.
-    bin.install_symlink libexec/"claude-sessions-menubar.py"
+
+    # Menu bar script and icon go to share/claude-sessions/ so the main
+    # script's `brew --prefix` lookup finds them.
+    (share/"claude-sessions").install "claude-sessions-menubar.py"
+    (share/"claude-sessions").install "assets/menubar-icon.png"
+    (share/"claude-sessions").install "assets/menubar-icon@2x.png" if File.exist?("assets/menubar-icon@2x.png")
+
+    # Symlink the menubar script next to the bin so the script's
+    # `$(dirname "$0")` lookup still works for dev installs.
+    bin.install_symlink share/"claude-sessions/claude-sessions-menubar.py"
   end
 
   def caveats
