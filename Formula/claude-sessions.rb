@@ -22,16 +22,26 @@ class ClaudeSessions < Formula
     bin.install_symlink share/"claude-sessions/claude-sessions-menubar.py"
   end
 
+  # Register LaunchAgents + menu bar automatically so `brew install` is the
+  # only command the user runs. Opt out with:
+  #   HOMEBREW_CLAUDE_SESSIONS_NO_MENUBAR=1 brew install ...
+  def post_install
+    system "#{bin}/claude-sessions", "install"
+    unless ENV["HOMEBREW_CLAUDE_SESSIONS_NO_MENUBAR"] == "1"
+      system "#{bin}/claude-sessions", "menubar", "install"
+    end
+  end
+
   def caveats
     <<~EOS
-      To finish setup, register the LaunchAgents:
-        claude-sessions install
+      claude-sessions is installed and running.
+        claude-sessions status     — see what's being tracked
+        claude-sessions restore    — manually resume dead sessions
 
-      To add the optional menu bar item:
-        claude-sessions menubar install
+      Config: ~/.claude/session-manager/config
 
-      Uninstall (removes LaunchAgents, preserves data):
-        claude-sessions uninstall
+      Skip auto-menubar on future installs:
+        HOMEBREW_CLAUDE_SESSIONS_NO_MENUBAR=1 brew install ...
     EOS
   end
 
