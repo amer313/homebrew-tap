@@ -22,26 +22,19 @@ class ClaudeSessions < Formula
     bin.install_symlink share/"claude-sessions/claude-sessions-menubar.py"
   end
 
-  # Register LaunchAgents + menu bar automatically so `brew install` is the
-  # only command the user runs. Opt out with:
-  #   HOMEBREW_CLAUDE_SESSIONS_NO_MENUBAR=1 brew install ...
-  def post_install
-    system "#{bin}/claude-sessions", "install"
-    unless ENV["HOMEBREW_CLAUDE_SESSIONS_NO_MENUBAR"] == "1"
-      system "#{bin}/claude-sessions", "menubar", "install"
-    end
-  end
-
   def caveats
     <<~EOS
-      claude-sessions is installed and running.
-        claude-sessions status     — see what's being tracked
-        claude-sessions restore    — manually resume dead sessions
+      Finish setup (one command — registers LaunchAgents + menu bar):
+        claude-sessions setup
+
+      Or piece-by-piece:
+        claude-sessions install           # LaunchAgents only
+        claude-sessions menubar install   # menu bar (opt-in)
 
       Config: ~/.claude/session-manager/config
 
-      Skip auto-menubar on future installs:
-        HOMEBREW_CLAUDE_SESSIONS_NO_MENUBAR=1 brew install ...
+      Why not auto-setup? Homebrew's post_install sandbox blocks writes to
+      ~/Library/LaunchAgents. Your shell can. One command, one time.
     EOS
   end
 
